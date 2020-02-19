@@ -2,28 +2,32 @@
   <v-container>
     <v-app-bar app elevate-on-scroll height="300">
       <v-container>
-        <v-row>
-          <v-col class="display-1 text-center">{{ gloss.greek }}</v-col>
-        </v-row>
-        <v-row class="mb-5">
-          <v-col class="headline text-center">{{ gloss.english }}</v-col>
-        </v-row>
-        <v-row>
-        </v-row>
-        <v-row align="center" justify="center" class="mb-5">
-          <v-btn-toggle mandatory v-model="voice">
-            <v-btn v-for="voice in voices" :key="voice">{{ voice }}</v-btn>
-          </v-btn-toggle>
-        </v-row>
-        <v-row>
-          <v-col v-for="mood in allowedMoods" :key="mood" class="text-center">
-            {{ mood }}<br /><v-btn icon small color="primary" @click.stop="showExplanationDialog('moods', mood)"><v-icon>mdi-help-circle-outline</v-icon></v-btn>
+        <v-row justify="center">
+          <v-col xs="12" sm="10" lg="6" xl="5">
+            <v-row>
+              <v-col class="display-1 text-center">{{ gloss.greek }}</v-col>
+            </v-row>
+            <v-row class="mb-5">
+              <v-col class="headline text-center">{{ gloss.english }}</v-col>
+            </v-row>
+            <v-row>
+            </v-row>
+            <v-row align="center" justify="center" class="mb-5">
+              <v-btn-toggle mandatory v-model="voice">
+                <v-btn v-for="voice in voices" :key="voice">{{ voice }}</v-btn>
+              </v-btn-toggle>
+            </v-row>
+            <v-row>
+              <v-col v-for="mood in allowedMoods" :key="mood" class="text-center">
+                {{ mood }}<br /><v-btn icon small color="primary" @click.stop="showExplanationDialog('moods', mood)"><v-icon>mdi-help-circle-outline</v-icon></v-btn>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-container>
     </v-app-bar>
-    <v-row>
-      <v-col>
+    <v-row justify="center">
+      <v-col xs="12" sm="10" lg="6" xl="5">
         <v-item-group mandatory>
           <v-card v-for="tense in tenses" :key="tense" class="mb-2">
             <v-card-text class="text-center subtitle-1">
