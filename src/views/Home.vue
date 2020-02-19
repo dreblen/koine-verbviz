@@ -1,41 +1,52 @@
 <template>
   <v-container>
+    <v-app-bar app elevate-on-scroll height="300">
+      <v-container>
+        <v-row>
+          <v-col class="display-1 text-center">{{ gloss.greek }}</v-col>
+        </v-row>
+        <v-row class="mb-5">
+          <v-col class="headline text-center">{{ gloss.english }}</v-col>
+        </v-row>
+        <v-row>
+        </v-row>
+        <v-row align="center" justify="center" class="mb-5">
+          <v-btn-toggle mandatory v-model="voice">
+            <v-btn v-for="voice in voices" :key="voice">{{ voice }}</v-btn>
+          </v-btn-toggle>
+        </v-row>
+        <v-row>
+          <v-col v-for="mood in allowedMoods" :key="mood" class="text-center">{{ mood }}</v-col>
+        </v-row>
+      </v-container>
+    </v-app-bar>
     <v-row>
-      <v-col class="display-1 text-center">{{ gloss.greek }}</v-col>
+      <v-col>
+        <v-item-group mandatory>
+          <v-card v-for="tense in tenses" :key="tense" class="mb-2">
+            <v-card-text class="text-center">
+              {{ tense }}
+              <v-row>
+                <v-col v-for="mood in allowedMoods" :key="mood">
+                  <!--
+                  We want the column here no matter what for spacing, but only create an
+                  item if it's a valid combination for this tense/mood
+                  -->
+                  <v-item v-if="glosses[mood][tense]" v-slot:default="{ active, toggle }">
+                    <v-btn
+                      block
+                      :large="true"
+                      :color="(active) ? 'primary' : 'secondary'"
+                      @click="() => { toggle(); setActive(mood, tense); }"
+                    />
+                  </v-item>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </v-item-group>
+      </v-col>
     </v-row>
-    <v-row class="mb-5">
-      <v-col class="headline text-center">{{ gloss.english }}</v-col>
-    </v-row>
-    <v-row>
-    </v-row>
-    <v-row align="center" justify="center" class="mb-5">
-      <v-btn-toggle mandatory v-model="voice">
-        <v-btn v-for="voice in voices" :key="voice">{{ voice }}</v-btn>
-      </v-btn-toggle>
-    </v-row>
-    <v-row>
-      <v-col />
-      <v-col v-for="mood in allowedMoods" :key="mood" class="text-center">{{ mood }}</v-col>
-    </v-row>
-    <v-item-group mandatory>
-      <v-row v-for="tense in tenses" :key="tense">
-        <v-col class="text-right">{{ tense }}</v-col>
-        <v-col v-for="mood in allowedMoods" :key="mood">
-          <!--
-          We want the column here no matter what for spacing, but only create an
-          item if it's a valid combination for this tense/mood
-          -->
-          <v-item v-if="glosses[mood][tense]" v-slot:default="{ active, toggle }">
-            <v-btn
-              block
-              :large="true"
-              :color="(active) ? 'primary' : 'secondary'"
-              @click="() => { toggle(); setActive(mood, tense); }"
-            />
-          </v-item>
-        </v-col>
-      </v-row>
-    </v-item-group>
   </v-container>
 </template>
 
