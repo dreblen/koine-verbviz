@@ -38,7 +38,9 @@
                       :large="true"
                       :color="(active) ? 'primary' : 'secondary'"
                       @click="() => { toggle(); setActive(mood, tense); }"
-                    />
+                    >
+                      {{ (active) ? mood : '' }}
+                    </v-btn>
                   </v-item>
                 </v-col>
               </v-row>
