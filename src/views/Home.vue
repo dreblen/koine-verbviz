@@ -15,12 +15,12 @@
     </v-row>
     <v-row>
       <v-col />
-      <v-col v-for="mood in moods" :key="mood" class="text-center">{{ mood }}</v-col>
+      <v-col v-for="mood in allowedMoods" :key="mood" class="text-center">{{ mood }}</v-col>
     </v-row>
     <v-item-group mandatory>
       <v-row v-for="tense in tenses" :key="tense">
         <v-col class="text-right">{{ tense }}</v-col>
-        <v-col v-for="mood in moods" :key="mood">
+        <v-col v-for="mood in allowedMoods" :key="mood">
           <!--
           We want the column here no matter what for spacing, but only create an
           item if it's a valid combination for this tense/mood
@@ -131,6 +131,25 @@ export default {
     }
   }),
   computed: {
+    allowedMoods: function () {
+      // If no comma-separated list of moods was given in the query string, then
+      // return the regular list
+      if (!this.$route.query.moods) {
+        return this.moods
+      } else {
+        // Make sure any values we were given are valid
+        let newMoods = this.$route.query.moods.split(',').filter((v) => {
+          return this.moods.indexOf(v) !== -1
+        })
+
+        // If none of the moods we were given were valid, return the regular list
+        if (newMoods.length === 0) {
+          return this.moods
+        } else {
+          return newMoods
+        }
+      }
+    },
     gloss: function () {
       return this.glosses[this.mood][this.tense][this.voices[this.voice]]
     }
