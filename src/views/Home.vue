@@ -55,7 +55,7 @@
         </v-item-group>
       </v-col>
     </v-row>
-    <v-dialog v-model="shouldShowExplanationDialog">
+    <v-dialog v-model="shouldShowExplanationDialog" max-width="400">
       <v-card>
         <v-card-title />
         <v-card-text>
