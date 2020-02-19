@@ -16,7 +16,9 @@
           </v-btn-toggle>
         </v-row>
         <v-row>
-          <v-col v-for="mood in allowedMoods" :key="mood" class="text-center">{{ mood }}</v-col>
+          <v-col v-for="mood in allowedMoods" :key="mood" class="text-center">
+            {{ mood }}<br /><v-btn icon small color="primary" @click.stop="showExplanationDialog('moods', mood)"><v-icon>mdi-help-circle-outline</v-icon></v-btn>
+          </v-col>
         </v-row>
       </v-container>
     </v-app-bar>
@@ -25,7 +27,7 @@
         <v-item-group mandatory>
           <v-card v-for="tense in tenses" :key="tense" class="mb-2">
             <v-card-text class="text-center subtitle-1">
-              {{ tense }}
+              {{ tense }} <v-btn icon small color="primary" @click.stop="showExplanationDialog('tenses', tense)"><v-icon>mdi-help-circle-outline</v-icon></v-btn>
               <v-row>
                 <v-col v-for="mood in allowedMoods" :key="mood">
                   <!--
@@ -49,6 +51,21 @@
         </v-item-group>
       </v-col>
     </v-row>
+    <v-dialog v-model="shouldShowExplanationDialog">
+      <v-card>
+        <v-card-title />
+        <v-card-text>
+          {{ explanationText }}
+        </v-card-text>
+        <v-card-text v-if="shouldShowExplanationTimeWarning">
+          Note: Outside of the indicative mood, <em>kind</em> of action is much more important than <em>time</em> of action.
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn @click="shouldShowExplanationDialog = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -81,6 +98,25 @@ export default {
       'Imperative'
     ],
     mood: 'Indicative',
+
+    // Explanation text
+    shouldShowExplanationDialog: false,
+    shouldShowExplanationTimeWarning: false,
+    explanationText: '',
+    explanations: {
+      moods: {
+        Indicative: 'The mood of (perceived) reality. A verb in the indicative mood presents what the speaker believes to be true and/or intends for the listener to receive as true.',
+        Subjunctive: 'The mood of possible or probable reality. A verb in the subjunctive mood presents what the speaker believes might be true or what could hypothetically be true.',
+        Imperative: 'The mood of purposed reality. A verb in the imperative mood presents a situation that the speaker intends someone to make true but that currently is not true.'
+      },
+      tenses: {
+        Aorist: 'Undefined/Perfective action, usually in the Past.',
+        Imperfect: 'Continuous/Imperfective action, usually in the Past.',
+        Perfect: 'Undefined/Perfective action that has Continuous/Imperfective effects, usually up to the Present.',
+        Present: 'Continuous/Imperfective action, usually in the Present.',
+        Future: 'Usually Undefined/Perfective action, usually in the Future.'
+      }
+    },
 
     // Glosses/mappings
     glosses: {
@@ -168,6 +204,17 @@ export default {
     }
   },
   methods: {
+    showExplanationDialog: function (scope, key) {
+      this.explanationText = this.explanations[scope][key]
+      // If we're talking tenses, add a note about time
+      if (scope === 'tenses') {
+        this.shouldShowExplanationTimeWarning = true
+      } else {
+        this.shouldShowExplanationTimeWarning = false
+      }
+
+      this.shouldShowExplanationDialog = true
+    },
     setActive: function (mood, tense) {
       this.mood = mood
       this.tense = tense
