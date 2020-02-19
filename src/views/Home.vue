@@ -24,7 +24,7 @@
       <v-col>
         <v-item-group mandatory>
           <v-card v-for="tense in tenses" :key="tense" class="mb-2">
-            <v-card-text class="text-center">
+            <v-card-text class="text-center subtitle-1">
               {{ tense }}
               <v-row>
                 <v-col v-for="mood in allowedMoods" :key="mood">
